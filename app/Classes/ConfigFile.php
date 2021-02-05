@@ -64,6 +64,11 @@ class ConfigFile
             throw new MissingConfigFileFieldException('user_id');
         }
 
+        // Check ignored exchanges
+        if(!isset($this->config['ignored_exchanges']) || !is_array($this->config['ignored_exchanges'])) {
+            throw new MissingConfigFileFieldException('ignored_exchanges');
+        }
+
         // Check allocations
         if(empty($this->config['allocations'])) {
             throw new MissingConfigFileFieldException('allocations');

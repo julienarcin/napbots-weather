@@ -94,8 +94,6 @@ class Napbots
             $weather = json_decode($weatherApi,true)['data']['weather']['weather'];
         }
 
-        return 'extreme';
-
         // Check crypto weather
         if($weather === 'Extreme markets') {
             return 'extreme';

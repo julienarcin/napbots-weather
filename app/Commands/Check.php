@@ -67,14 +67,14 @@ class Check extends Command
             $this->line('✅  Napbots management is successful.');
 
             // Log succesful tests
-            Log::info('✅  All tests passed successfully.');
+            Log::info('✅  All checks passed successfully.');
 
             // Notify user for succesful tests
-            $this->notify("Napbots", "✅  All tests passed successfully.", "icon.png");
+            $this->notify("Napbots", "✅  All checks passed successfully.", "icon.png");
 
             // OK
             $this->newLine(1);
-            $this->info('🚀 Script ready.');
+            $this->info('🚀 All checks passed successfully.');
 
         } catch(\Exception $exception) {
             $this->error($exception->getMessage());
