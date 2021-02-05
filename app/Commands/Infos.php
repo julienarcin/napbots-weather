@@ -40,6 +40,8 @@ class Infos extends Command
      */
     public function handle(ConfigFile $configFile, Napbots $napbots)
     {
+        Log::info('💻  Getting napbots infos.');
+
         $this->alert('Informations');
 
         try {
@@ -80,7 +82,7 @@ class Infos extends Command
                 $this->line(' - 💰 Value: $' . $exchange['totalUsdValue'] . ' / ' . $exchange['totalEurValue'] . '€');
 
                 // Portfolio allocation
-                $this->line(' - ⚙️ Allocation');
+                $this->line(' - ⚙️  Allocation:');
                 $this->line('    * Leverage: ' . $exchange['compo']['leverage']);
                 $this->line('    * BotOnly: ' . ($exchange['botOnly'] ? 'true' : 'false'));
                 $this->line('    * Composition:');

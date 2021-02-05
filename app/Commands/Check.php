@@ -26,11 +26,13 @@ class Check extends Command
     /**
      * Execute the console command.
      *
+     * @param ConfigFile $configFile
+     * @param Napbots $napbots
      * @return mixed
      */
     public function handle(ConfigFile $configFile, Napbots $napbots)
     {
-        Log::info('⏰  Testing configuration.');
+        Log::info('💻  Checking configuration.');
 
         $this->alert('Checking configuration');
 

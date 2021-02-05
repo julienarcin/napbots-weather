@@ -30,6 +30,8 @@ class Cron extends Command
     /**
      * Execute the console command.
      *
+     * @param ConfigFile $configFile
+     * @param DataFile $dataFile
      * @return mixed
      */
     public function handle(ConfigFile $configFile, DataFile $dataFile)

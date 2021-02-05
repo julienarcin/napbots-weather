@@ -31,6 +31,9 @@
       "bot_only": true
     }
   },
+  "ignored_exchanges": {
+
+  },
   "weather_change_cooldown": {
     "enabled": true,
     "cooldown_seconds": 43200,
