@@ -1,0 +1,45 @@
+{
+  "email": "",
+  "password": "",
+  "user_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "allocations": {
+    "mild_bear": {
+      "compo": {
+        "STRAT_BTC_USD_FUNDING_8H_1": 0.2,
+        "STRAT_ETH_USD_FUNDING_8H_1": 0.2,
+        "STRAT_BTC_ETH_USD_H_1": 0.6
+      },
+      "leverage": 1,
+      "bot_only": true
+    },
+    "mild_bull": {
+      "compo": {
+        "STRAT_ETH_USD_H_3_V2": 0.1,
+        "STRAT_BTC_USD_H_3_V2": 0.1,
+        "STRAT_BTC_ETH_USD_H_1": 0.8
+      },
+      "leverage": 1.5,
+      "bot_only": true
+    },
+    "extreme": {
+      "compo": {
+        "STRAT_ETH_USD_H_3_V2": 0.4,
+        "STRAT_BTC_USD_H_3_V2": 0.4,
+        "STRAT_BTC_ETH_USD_H_1": 0.2
+      },
+      "leverage": 1,
+      "bot_only": true
+    }
+  },
+  "weather_change_cooldown": {
+    "enabled": true,
+    "cooldown_seconds": 43200,
+    "allocation": {
+      "STRAT_ETH_USD_H_3_V2": 0.25,
+      "STRAT_BTC_USD_H_3_V2": 0.25,
+      "STRAT_BTC_ETH_USD_H_1": 0.5
+    },
+    "leverage": 0.5,
+    "bot_only": true
+  }
+}
