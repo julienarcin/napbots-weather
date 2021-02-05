@@ -30,7 +30,7 @@ class DataFile
         $file = Storage::get('data/data.json');
         $decoded = json_decode($file,true);
 
-        if(empty($decoded) || !is_array($decoded)) {
+        if($decoded === null || !is_array($decoded)) {
             throw new InvalidDataFileException();
         }
 
@@ -48,7 +48,14 @@ class DataFile
         return Arr::get($this->data, $key, null);
     }
 
+    /**
+     * @param $key
+     * @param $value
+     */
     public function setValue($key, $value) {
-        //$this->data = array_replace_recursive()
+        Arr::set($this->data, $key, $value);
+
+        // Write data file
+        Storage::put('data/data.json', json_encode($this->data));
     }
 }

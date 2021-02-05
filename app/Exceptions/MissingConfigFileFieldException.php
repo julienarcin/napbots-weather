@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 /**
@@ -26,5 +27,18 @@ class MissingConfigFileFieldException extends Exception
     public function __construct($field = '', $code = 0, Throwable $previous = null)
     {
         parent::__construct('❌  Missing config file field "' . $field . '". Please update it.', $code, $previous);
+    }
+
+    /**
+     * Report or log an exception.
+     *
+     * @param Exception $exception
+     *
+     * @throws Exception
+     * @return mixed|void
+     */
+    public function report()
+    {
+        Log::error($this->getMessage());
     }
 }

@@ -15,38 +15,34 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use LaravelZero\Framework\Commands\Command;
 
-class Info extends Command
+class Infos extends Command
 {
     /**
      * The signature of the command.
      *
      * @var string
      */
-    protected $signature = 'info';
+    protected $signature = 'infos';
 
     /**
      * The description of the command.
      *
      * @var string
      */
-    protected $description = 'Get information about current status.';
+    protected $description = 'Get informations about current status.';
 
     /**
      * Execute the console command.
      *
+     * @param ConfigFile $configFile
+     * @param Napbots $napbots
      * @return mixed
      */
-    public function handle()
+    public function handle(ConfigFile $configFile, Napbots $napbots)
     {
         $this->alert('Informations');
 
         try {
-            // Get configuration
-            $configFile = new ConfigFile();
-
-            // Create napbots instance
-            $napbots = new Napbots();
-
             // Get crypto weather
             $weather = $napbots->getCryptoWeather();
 

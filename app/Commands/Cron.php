@@ -2,11 +2,14 @@
 
 namespace App\Commands;
 
+use App\Classes\ConfigFile;
+use App\Classes\DataFile;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use LaravelZero\Framework\Commands\Command;
+use Symfony\Component\VarDumper\Cloner\Data;
 
 class Cron extends Command
 {
@@ -29,14 +32,9 @@ class Cron extends Command
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(ConfigFile $configFile, DataFile $dataFile)
     {
-        Storage::put("reminders.txt", "Task 1");
-        Log::info('Running cron.');
-
-        $config = Storage::get('config.json');
-
-        $this->info(json_encode(Config::get('napbots')));
+        Log::info('⏰  Running cron.');
     }
 
     /**

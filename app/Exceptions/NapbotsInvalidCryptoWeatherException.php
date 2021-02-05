@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 /**
@@ -17,7 +18,7 @@ class NapbotsInvalidCryptoWeatherException extends Exception
     public $weather;
 
     /**
-     * NapbotsAuthException constructor.
+     * NapbotsInvalidCryptoWeatherException constructor.
      *
      * @param string         $weather
      * @param int            $code
@@ -26,5 +27,18 @@ class NapbotsInvalidCryptoWeatherException extends Exception
     public function __construct($weather = '', $code = 0, Throwable $previous = null)
     {
         parent::__construct('❌  Napbots invalid crypto weather: ' . $weather . '.', $code, $previous);
+    }
+
+    /**
+     * Report or log an exception.
+     *
+     * @param Exception $exception
+     *
+     * @throws Exception
+     * @return mixed|void
+     */
+    public function report()
+    {
+        Log::error($this->getMessage());
     }
 }

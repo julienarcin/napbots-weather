@@ -4,46 +4,37 @@ namespace App\Commands;
 
 use App\Classes\ConfigFile;
 use App\Classes\Napbots;
-use App\Exceptions\InvalidConfigFileException;
-use App\Exceptions\MissingConfigFileException;
-use App\Exceptions\MissingConfigFileFieldException;
-use App\Exceptions\NapbotsAuthException;
-use App\Exceptions\NapbotsInvalidCryptoWeatherException;
-use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 use LaravelZero\Framework\Commands\Command;
 
-class Test extends Command
+class Check extends Command
 {
     /**
      * The signature of the command.
      *
      * @var string
      */
-    protected $signature = 'test';
+    protected $signature = 'check';
 
     /**
      * The description of the command.
      *
      * @var string
      */
-    protected $description = 'Test configuration.';
+    protected $description = 'Check configuration.';
 
     /**
      * Execute the console command.
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(ConfigFile $configFile, Napbots $napbots)
     {
-        $this->alert('Testing configuration');
+        Log::info('⏰  Testing configuration.');
+
+        $this->alert('Checking configuration');
 
         try {
-            // Get configuration
-            $configFile = new ConfigFile();
-
             // Log successful config file existence + format
             $this->line('✅  Config file exists.');
             $this->line('✅  Config file is json.');
@@ -54,9 +45,6 @@ class Test extends Command
             // Log successful config file check
             $this->line('✅  Config file fields all present.');
             $this->line('✅  Config file allocations valid.');
-
-            // Create napbots instance
-            $napbots = new Napbots();
 
             // Get crypto weather
             $weather = $napbots->getCryptoWeather();

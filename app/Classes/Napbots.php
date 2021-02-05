@@ -5,6 +5,8 @@ namespace App\Classes;
 use App\Exceptions\NapbotsAuthException;
 use App\Exceptions\NapbotsInvalidCryptoWeatherException;
 use App\Exceptions\NapbotsInvalidInfosException;
+use App\Exceptions\NapbotsNotResponding;
+use App\Exceptions\NapbotsUnauthenticated;
 
 /**
  * Class Napbots
@@ -59,6 +61,13 @@ class Napbots
         curl_close($ch);
 
         $json = json_decode($response,true);
+
+        // Napbots not responding
+        if(!is_array($json) || !isset($json['success'])) {
+            throw new NapbotsNotResponding();
+        }
+
+        // Napbots auth exception
         if($json['success'] !== true || empty($json['data']) || empty($json['data']['accessToken'])) {
             throw new NapbotsAuthException();
         }
@@ -75,7 +84,12 @@ class Napbots
     public function getCryptoWeather(): string
     {
         // Get crypto weather
-        $weatherApi = file_get_contents('https://middle.napbots.com/v1/crypto-weather');
+        try {
+            $weatherApi = file_get_contents('https://middle.napbots.com/v1/crypto-weather');
+        } catch(\ErrorException $exception) {
+            throw new NapbotsNotResponding();
+        }
+
         if($weatherApi) {
             $weather = json_decode($weatherApi,true)['data']['weather']['weather'];
         }
@@ -96,6 +110,11 @@ class Napbots
      * Get informations
      */
     public function getInfos() {
+        // Unauthenticated
+        if(empty($this->authToken)) {
+            throw new NapbotsUnauthenticated();
+        }
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, 'https://middle.napbots.com/v1/account/for-user/' . $this->userId);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
@@ -103,6 +122,13 @@ class Napbots
         $response = curl_exec ($ch);
 
         $json = json_decode($response,true);
+
+        // Napbots not responding
+        if(!is_array($json) || !isset($json['success'])) {
+            throw new NapbotsNotResponding();
+        }
+
+        // Napbots invalid infos
         if(!$json['success'] || empty($json['data']) || !is_array($json['data'])) {
             throw new NapbotsInvalidInfosException();
         }

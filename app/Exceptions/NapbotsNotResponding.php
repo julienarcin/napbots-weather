@@ -7,26 +7,20 @@ use Illuminate\Support\Facades\Log;
 use Throwable;
 
 /**
- * Class NapbotsInvalidInfosException
+ * Class NapbotsNotResponding
  * @package App\Exceptions
  */
-class NapbotsInvalidInfosException extends Exception
+class NapbotsNotResponding extends Exception
 {
     /**
-     * @var
-     */
-    public $weather;
-
-    /**
-     * NapbotsInvalidInfosException constructor.
+     * NapbotsNotResponding constructor.
      *
-     * @param string         $weather
      * @param int            $code
      * @param Throwable|null $previous
      */
-    public function __construct($weather = '', $code = 0, Throwable $previous = null)
+    public function __construct($code = 0, Throwable $previous = null)
     {
-        parent::__construct('❌  Napbots invalid response when trying to get infos. Please check your user id in config file.', $code, $previous);
+        parent::__construct('❌  Napbots servers are not responding properly.', $code, $previous);
     }
 
     /**
