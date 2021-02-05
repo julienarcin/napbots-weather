@@ -25,6 +25,6 @@ class NapbotsInvalidCryptoWeatherException extends Exception
      */
     public function __construct($weather = '', $code = 0, Throwable $previous = null)
     {
-        parent::__construct('❌  Napbots invalid crypto weather: ' . $weather, $code, $previous);
+        parent::__construct('❌  Napbots invalid crypto weather: ' . $weather . '.', $code, $previous);
     }
 }

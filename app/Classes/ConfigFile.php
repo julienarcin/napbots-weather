@@ -46,6 +46,7 @@ class ConfigFile
 
     /**
      * @throws MissingConfigFileFieldException
+     * @throws InvalidConfigFileFieldException
      */
     public function checkFile() {
         // Check email
@@ -122,9 +123,9 @@ class ConfigFile
      * @param $name
      * @param $allocation
      * @return ConfigFile
-     * @throws InvalidConfigFileComposition
      * @throws InvalidConfigFileFieldException
      * @throws MissingConfigFileFieldException
+     * @throws InvalidConfigFileCompositionException
      */
     public function checkAllocation($name, $allocation) {
 

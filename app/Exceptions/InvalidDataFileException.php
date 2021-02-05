@@ -6,19 +6,19 @@ use Exception;
 use Throwable;
 
 /**
- * Class NapbotsAuthException
+ * Class InvalidDataFileException
  * @package App\Exceptions
  */
-class NapbotsAuthException extends Exception
+class InvalidDataFileException extends Exception
 {
     /**
-     * NapbotsAuthException constructor.
+     * InvalidDataFileException constructor.
      *
      * @param int            $code
      * @param Throwable|null $previous
      */
     public function __construct($code = 0, Throwable $previous = null)
     {
-        parent::__construct('❌  Napbots credential error. Please check your username/password.', $code, $previous);
+        parent::__construct('❌  Invalid data file. Please check the content is well formatted JSON.', $code, $previous);
     }
 }

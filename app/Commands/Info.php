@@ -29,7 +29,7 @@ class Info extends Command
      *
      * @var string
      */
-    protected $description = 'Get information about current napbots status.';
+    protected $description = 'Get information about current status.';
 
     /**
      * Execute the console command.
@@ -45,13 +45,13 @@ class Info extends Command
             $configFile = new ConfigFile();
 
             // Create napbots instance
-            $napbots = new Napbots($configFile->config['email'], $configFile->config['password'], $configFile->config['user_id']);
+            $napbots = new Napbots();
 
             // Get crypto weather
             $weather = $napbots->getCryptoWeather();
 
             // Try to authenticate
-            $napbots->authenticate();
+            $napbots->authenticate($configFile->config['email'], $configFile->config['password'], $configFile->config['user_id']);
 
             // Try to get infos
             $infos = $napbots->getInfos();

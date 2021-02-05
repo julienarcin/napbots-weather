@@ -56,7 +56,7 @@ class Test extends Command
             $this->line('✅  Config file allocations valid.');
 
             // Create napbots instance
-            $napbots = new Napbots($configFile->config['email'], $configFile->config['password'], $configFile->config['user_id']);
+            $napbots = new Napbots();
 
             // Get crypto weather
             $weather = $napbots->getCryptoWeather();
@@ -65,7 +65,7 @@ class Test extends Command
             $this->line('✅  Napbots crypto weather connection successful (' . $weather . ').');
 
             // Try to authenticate
-            $napbots->authenticate();
+            $napbots->authenticate($configFile->config['email'], $configFile->config['password'], $configFile->config['user_id']);
 
             // Log successful napbots authentication
             $this->line('✅  Napbots authentication is successful.');
@@ -77,7 +77,7 @@ class Test extends Command
             $this->line('✅  Napbots management is successful.');
 
             // Log succesful tests
-            Log::info('All tests passed successfully.');
+            Log::info('✅  All tests passed successfully.');
 
             // OK
             $this->newLine(1);

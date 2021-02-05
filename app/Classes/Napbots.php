@@ -4,7 +4,7 @@ namespace App\Classes;
 
 use App\Exceptions\NapbotsAuthException;
 use App\Exceptions\NapbotsInvalidCryptoWeatherException;
-use App\Exceptions\NapbotsInvalidCurrentAllocationException;
+use App\Exceptions\NapbotsInvalidInfosException;
 
 /**
  * Class Napbots
@@ -33,25 +33,20 @@ class Napbots
      private $authToken;
 
     /**
-     * Napbots constructor.
+     * Authenticate to Napbots
      * @param $email
      * @param $password
      * @param $userId
+     * @return Napbots
+     * @throws NapbotsAuthException
      */
-    public function __construct($email, $password, $userId) {
+    public function authenticate($email, $password, $userId): Napbots
+    {
         // Set data
         $this->email = $email;
         $this->password = $password;
         $this->userId = $userId;
 
-        // Return instance
-        return $this;
-    }
-
-    /**
-     * Authenticate to Napbots
-     */
-    public function authenticate() {
         // Login to app (get auth token)
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, 'https://middle.napbots.com/v1/user/login' );
@@ -77,7 +72,8 @@ class Napbots
     /**
      * Get crypto weather
      */
-    public function getCryptoWeather() {
+    public function getCryptoWeather(): string
+    {
         // Get crypto weather
         $weatherApi = file_get_contents('https://middle.napbots.com/v1/crypto-weather');
         if($weatherApi) {
