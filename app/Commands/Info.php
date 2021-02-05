@@ -38,7 +38,7 @@ class Info extends Command
      */
     public function handle()
     {
-        $this->alert('Napbots informations');
+        $this->alert('Informations');
 
         try {
             // Get configuration
@@ -75,18 +75,18 @@ class Info extends Command
 
                 // Trading active
                 if($exchange['tradingActive']) {
-                    $this->line(' - ✅  Trading active.');
+                    $this->line(' - ✅ Trading active.');
                 } else {
-                    $this->line(' - ❌  Trading inactive.');
+                    $this->line(' - ❌ Trading inactive.');
                 }
 
                 // Portfolio value
-                $this->line(' - 💰  Value: $' . $exchange['totalUsdValue'] . ' / ' . $exchange['totalEurValue'] . '€');
+                $this->line(' - 💰 Value: $' . $exchange['totalUsdValue'] . ' / ' . $exchange['totalEurValue'] . '€');
 
                 // Portfolio allocation
-                $this->line(' - ⚙️  Allocation');
+                $this->line(' - ⚙️ Allocation');
                 $this->line('    * Leverage: ' . $exchange['compo']['leverage']);
-                $this->line('    * BotOnly: ' . $exchange['botOnly']);
+                $this->line('    * BotOnly: ' . ($exchange['botOnly'] ? 'true' : 'false'));
                 $this->line('    * Composition:');
                 foreach($exchange['compo']['compo'] as $key => $value) {
                     $this->line('       ' . $key . ' => ' . $value*100 . '%');

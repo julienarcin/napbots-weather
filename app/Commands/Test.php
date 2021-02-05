@@ -76,12 +76,16 @@ class Test extends Command
             // Log successful napbots getting current allocation
             $this->line('✅  Napbots management is successful.');
 
+            // Log succesful tests
+            Log::info('All tests passed successfully.');
+
             // OK
             $this->newLine(1);
             $this->info('🚀 Script ready.');
 
         } catch(\Exception $exception) {
             $this->error($exception->getMessage());
+            Log::error($exception->getMessage());
             die();
         }
     }
