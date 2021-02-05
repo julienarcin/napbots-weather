@@ -4,6 +4,7 @@ namespace App\Classes;
 
 use App\Exceptions\NapbotsAuthException;
 use App\Exceptions\NapbotsInvalidCryptoWeatherException;
+use App\Exceptions\NapbotsInvalidCurrentAllocationException;
 
 /**
  * Class Napbots
@@ -93,5 +94,23 @@ class Napbots
         } else {
             throw new NapbotsInvalidCryptoWeatherException($weather);
         }
+    }
+
+    /**
+     * Get informations
+     */
+    public function getInfos() {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://middle.napbots.com/v1/account/for-user/' . $this->userId);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json', 'token: ' . $this->authToken]);
+        $response = curl_exec ($ch);
+
+        $json = json_decode($response,true);
+        if(!$json['success'] || empty($json['data']) || !is_array($json['data'])) {
+            throw new NapbotsInvalidInfosException();
+        }
+
+        return json_decode($response,true);
     }
 }

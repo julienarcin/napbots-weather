@@ -29,7 +29,7 @@ class Test extends Command
      *
      * @var string
      */
-    protected $description = 'Test napbots configuration.';
+    protected $description = 'Test configuration.';
 
     /**
      * Execute the console command.
@@ -38,33 +38,48 @@ class Test extends Command
      */
     public function handle()
     {
+        $this->alert('Testing configuration');
+
         try {
             // Get configuration
             $configFile = new ConfigFile();
 
             // Log successful config file existence + format
-            $this->info('✅  Config file exists.');
-            $this->info('✅  Config file is json.');
+            $this->line('✅  Config file exists.');
+            $this->line('✅  Config file is json.');
 
             // Check configuration file
             $configFile->checkFile();
 
             // Log successful config file check
-            $this->info('✅  Config file fields all present.');
-            $this->info('✅  Config file allocations valid.');
+            $this->line('✅  Config file fields all present.');
+            $this->line('✅  Config file allocations valid.');
 
-            // Try to log-in to napbots
+            // Create napbots instance
             $napbots = new Napbots($configFile->config['email'], $configFile->config['password'], $configFile->config['user_id']);
-            $napbots->authenticate();
-
-            // Log successful napbots connexion
-            $this->info('✅  Napbots authentication is successful.');
 
             // Get crypto weather
             $weather = $napbots->getCryptoWeather();
 
             // Log successful napbots crypto weather
-            $this->info('✅  Napbots crypto weather connection successful (' . $weather . ').');
+            $this->line('✅  Napbots crypto weather connection successful (' . $weather . ').');
+
+            // Try to authenticate
+            $napbots->authenticate();
+
+            // Log successful napbots authentication
+            $this->line('✅  Napbots authentication is successful.');
+
+            // Try to get infos
+            $napbots->getInfos();
+
+            // Log successful napbots getting current allocation
+            $this->line('✅  Napbots management is successful.');
+
+            // OK
+            $this->newLine(1);
+            $this->info('🚀 Script ready.');
+
         } catch(\Exception $exception) {
             $this->error($exception->getMessage());
             die();
