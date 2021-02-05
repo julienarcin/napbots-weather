@@ -4,7 +4,7 @@ return [
     'disks' => [
         'local' => [
             'driver' => 'local',
-            'root' => getcwd() . '/data',
+            'root' => getcwd(),
         ],
     ],
 ];

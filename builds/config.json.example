@@ -35,11 +35,13 @@
     "enabled": true,
     "cooldown_seconds": 43200,
     "allocation": {
-      "STRAT_ETH_USD_H_3_V2": 0.25,
-      "STRAT_BTC_USD_H_3_V2": 0.25,
-      "STRAT_BTC_ETH_USD_H_1": 0.5
-    },
-    "leverage": 0.5,
-    "bot_only": true
+      "compo": {
+          "STRAT_ETH_USD_H_3_V2": 0.25,
+          "STRAT_BTC_USD_H_3_V2": 0.25,
+          "STRAT_BTC_ETH_USD_H_1": 0.5
+      },
+      "leverage": 0.5,
+      "bot_only": true
+    }
   }
 }

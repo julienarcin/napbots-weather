@@ -22,7 +22,7 @@ class Cron extends Command
      *
      * @var string
      */
-    protected $description = 'Run cron';
+    protected $description = 'Run automated tasks.';
 
     /**
      * Execute the console command.
