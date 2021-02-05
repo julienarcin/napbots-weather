@@ -36,7 +36,14 @@
   },
   "weather_change_cooldown": {
     "enabled": true,
-    "cooldown_seconds": 43200,
+    "duration_seconds": 43200,
+    "condition_old_weather": [
+        "extreme"
+    ],
+    "condition_new_weather": [
+        "mild_bull",
+        "mild_bear"
+    ],
     "allocation": {
       "compo": {
           "STRAT_ETH_USD_H_3_V2": 0.25,

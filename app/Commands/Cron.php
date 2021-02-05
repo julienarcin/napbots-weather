@@ -67,7 +67,7 @@ class Cron extends Command
             // Are we in cooldown mode ? If no, we should set up cooldown mode (if enabled) or apply market allocation
             if(!$appFile->getValue('cooldown_enabled') || $appFile->getValue('cooldown_end') <= Carbon::now()->timestamp) {
                 // If cooldown mode enabled, apply it
-                if($configFile->config['weather_change_cooldown']['enabled']) {
+                if($configFile->config['weather_change_cooldown']['enabled'] && in_array($appFile->getValue('last_weather'), $configFile->config['weather_change_cooldown']['condition_old_weather']) && in_array($weather, $configFile->config['weather_change_cooldown']['condition_new_weather'])) {
                     // TODO: Apply cooldown allocation
                     //
                     $this->logDisplayNotify('❄️  Applied cooldown mode for ' . $configFile->config['weather_change_cooldown']['duration_seconds'] . ' seconds.', 'info');
@@ -77,7 +77,7 @@ class Cron extends Command
                 } else {
                     // TODO: Apply market allocation
                     //
-                    $this->logDisplayNotify('🔧  Changed allocation for ' . $weather . ' weather.', 'info');
+                    $this->logDisplayNotify('🔧 Changed allocation for ' . $weather . ' markets.', 'info');
                 }
 
                 // Save last weather
@@ -99,7 +99,7 @@ class Cron extends Command
             if($appFile->getValue('cooldown_enabled') && $appFile->getValue('cooldown_end') <= Carbon::now()->timestamp) {
                 // TODO: Apply market allocation
                 //
-                $this->logDisplayNotify('🔧  Changed allocation for ' . $weather . ' weather.');
+                $this->logDisplayNotify('🔧 Changed allocation for ' . $weather . ' markets.');
                 $appFile->setValue('cooldown_enabled',false);
                 $appFile->setValue('cooldown_end',0);
             }
