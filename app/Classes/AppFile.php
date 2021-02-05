@@ -2,17 +2,16 @@
 
 namespace App\Classes;
 
-use App\Exceptions\InvalidDataFileException;
-use App\Exceptions\MissingDataFileException;
+use App\Exceptions\InvalidAppFileException;
 use ArrayAccess;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 
 /**
- * Class DataFile
+ * Class AppFile
  * @package App\Classes
  */
-class DataFile
+class AppFile
 {
     /**
      * @var
@@ -20,18 +19,18 @@ class DataFile
     public $data;
 
     /**
-     * DataFile constructor.
+     * AppFile constructor.
      */
     public function __construct() {
-        if(!Storage::exists('data/data.json')) {
-            Storage::put('data/data.json','{}');
+        if(!Storage::exists('data/app.json')) {
+            Storage::put('data/app.json','{}');
         }
 
-        $file = Storage::get('data/data.json');
+        $file = Storage::get('data/app.json');
         $decoded = json_decode($file,true);
 
         if($decoded === null || !is_array($decoded)) {
-            throw new InvalidDataFileException();
+            throw new InvalidAppFileException();
         }
 
         $this->data = $decoded;
@@ -56,6 +55,6 @@ class DataFile
         Arr::set($this->data, $key, $value);
 
         // Write data file
-        Storage::put('data/data.json', json_encode($this->data));
+        Storage::put('data/app.json', json_encode($this->data));
     }
 }

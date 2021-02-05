@@ -10,7 +10,7 @@ use Throwable;
  * Class InvalidDataFileException
  * @package App\Exceptions
  */
-class InvalidDataFileException extends Exception
+class InvalidAppFileException extends Exception
 {
     /**
      * InvalidDataFileException constructor.
@@ -20,7 +20,7 @@ class InvalidDataFileException extends Exception
      */
     public function __construct($code = 0, Throwable $previous = null)
     {
-        parent::__construct('❌  Invalid data file. Please check the content is well formatted JSON.', $code, $previous);
+        parent::__construct('❌  Invalid app file. Please check the content is well formatted JSON.', $code, $previous);
     }
 
     /**

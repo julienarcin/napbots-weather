@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use App\Classes\AppFile;
 use App\Classes\ConfigFile;
 use App\Classes\Napbots;
 use App\Exceptions\InvalidConfigFileException;
@@ -9,6 +10,7 @@ use App\Exceptions\MissingConfigFileException;
 use App\Exceptions\MissingConfigFileFieldException;
 use App\Exceptions\NapbotsAuthException;
 use App\Exceptions\NapbotsInvalidCryptoWeatherException;
+use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
@@ -34,11 +36,12 @@ class Infos extends Command
     /**
      * Execute the console command.
      *
-     * @param ConfigFile $configFile
      * @param Napbots $napbots
+     * @param ConfigFile $configFile
+     * @param AppFile $appFile
      * @return mixed
      */
-    public function handle(ConfigFile $configFile, Napbots $napbots)
+    public function handle(Napbots $napbots, ConfigFile $configFile, AppFile $appFile)
     {
         Log::info('💻  Getting napbots infos.');
 
@@ -61,6 +64,17 @@ class Infos extends Command
                 $this->line('☀️  Current weather is mild-bull markets.');
             } elseif($weather == 'extreme') {
                 $this->line('🌪  Current weather is extreme markets. Trade with prudence.');
+            }
+
+            // New line
+            $this->newLine();
+
+            // Cooldown infos
+            if($appFile->getValue('cooldown_enabled') && $appFile->getValue('cooldown_end') > Carbon::now()->timestamp) {
+                $cooldownRemaining = $appFile->getValue('cooldown_end') - Carbon::now()->timestamp;
+                $this->line('❄️  Cooldown: Enabled for ' . $cooldownRemaining . ' seconds.');
+            } else {
+                $this->line('❄️  Cooldown mode: Disabled');
             }
 
             // New line
