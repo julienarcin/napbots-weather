@@ -42,7 +42,7 @@ class Test2 extends Command
      */
     public function handle(ConfigFile $configFile, Napbots $napbots)
     {
-       $weather = $napbots->getCryptoWeather();
-       $this->info('Weather is ' . $weather);
+        // Notify user for succesful tests
+        $this->notify("Napbots", "✅  All tests passed successfully.", getcwd() . '/icon.png');
     }
 }

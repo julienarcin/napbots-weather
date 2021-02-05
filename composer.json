@@ -14,10 +14,11 @@
     ],
     "require": {
         "php": "^7.3|^8.0",
-        "illuminate/log": "^8.0",
-        "laravel-zero/framework": "^8.4",
         "ext-curl": "*",
-        "ext-json": "*"
+        "ext-json": "*",
+        "illuminate/log": "^8.0",
+        "laminas/laminas-text": "^2.8",
+        "laravel-zero/framework": "^8.4"
     },
     "require-dev": {
         "mockery/mockery": "^1.4.2",

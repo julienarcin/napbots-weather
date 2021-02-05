@@ -69,6 +69,9 @@ class Check extends Command
             // Log succesful tests
             Log::info('✅  All tests passed successfully.');
 
+            // Notify user for succesful tests
+            $this->notify("Napbots", "✅  All tests passed successfully.", "icon.png");
+
             // OK
             $this->newLine(1);
             $this->info('🚀 Script ready.');
