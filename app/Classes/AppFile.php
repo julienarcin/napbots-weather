@@ -40,6 +40,15 @@ class AppFile
     }
 
     /**
+     * Delete app file
+     */
+    public function delete() {
+        if(Storage::exists('data/app.json')) {
+            Storage::delete('data/app.json');
+        }
+    }
+
+    /**
      * @param $key
      * @return array|ArrayAccess|mixed
      */

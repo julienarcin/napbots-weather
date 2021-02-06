@@ -51,11 +51,11 @@ class Infos extends Command
             // Get crypto weather
             $weather = $napbots->getCryptoWeather();
 
-            // Try to authenticate
+            // Authenticate
             $napbots->authenticate($configFile->config['email'], $configFile->config['password'], $configFile->config['user_id']);
 
-            // Try to get infos
-            $infos = $napbots->getInfos();
+            // Get infos
+            $infos = $napbots->getExchanges();
 
             // Crypto weather
             if($weather == 'mild_bear') {

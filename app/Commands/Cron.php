@@ -60,6 +60,7 @@ class Cron extends Command
 
             // Are we in cooldown mode ? If yes, we shouldn't do anything.
             if($appFile->getValue('cooldown_enabled') && $appFile->getValue('cooldown_end') > Carbon::now()->timestamp) {
+                // Nothing to do, still in cooldown
                 $cooldownRemaining = $appFile->getValue('cooldown_end') - Carbon::now()->timestamp;
                 $this->logDisplayNotify('❄️  Still in cooldown mode for ' . $cooldownRemaining . ' seconds. Nothing to do.', 'info');
             }
@@ -68,15 +69,27 @@ class Cron extends Command
             if(!$appFile->getValue('cooldown_enabled') || $appFile->getValue('cooldown_end') <= Carbon::now()->timestamp) {
                 // If cooldown mode enabled, apply it
                 if($configFile->config['weather_change_cooldown']['enabled'] && in_array($appFile->getValue('last_weather'), $configFile->config['weather_change_cooldown']['condition_old_weather']) && in_array($weather, $configFile->config['weather_change_cooldown']['condition_new_weather'])) {
-                    // TODO: Apply cooldown allocation
-                    //
-                    $this->logDisplayNotify('❄️  Applied cooldown mode for ' . $configFile->config['weather_change_cooldown']['duration_seconds'] . ' seconds.', 'info');
+                    // Authenticate to napbots
+                    $napbots->authenticate($configFile->config['email'], $configFile->config['password'], $configFile->config['user_id']);
+
+                    // Apply cooldown allocation
+                    $napbots->setAllocation($configFile->config['weather_change_cooldown']['allocation']);
+
+                    // Enable cooldown
                     $appFile->setValue('cooldown_enabled',true);
                     $appFile->setValue('cooldown_end', Carbon::now()->timestamp + $configFile->config['weather_change_cooldown']['duration_seconds']);
+
+                    // Notify user
+                    $this->logDisplayNotify('❄️  Applied cooldown mode for ' . $configFile->config['weather_change_cooldown']['duration_seconds'] . ' seconds.', 'info');
                 // Else, apply weather strategy immediately
                 } else {
-                    // TODO: Apply market allocation
-                    //
+                    // Authenticate to napbots
+                    $napbots->authenticate($configFile->config['email'], $configFile->config['password'], $configFile->config['user_id']);
+
+                    // Apply weather allocation
+                    $napbots->setAllocation($configFile->config['allocations'][$weather]);
+
+                    // Log
                     $this->logDisplayNotify('🔧 Changed allocation for ' . $weather . ' markets.', 'info');
                 }
 
@@ -85,21 +98,28 @@ class Cron extends Command
             }
         } else {
             // Are we in cooldown mode ? If yes, nothing to do
-            if($appFile->getValue('cooldown_enabled') && $appFile->getValue('cooldown_end') > Carbon::now()->timestamp) {
+            if ($appFile->getValue('cooldown_enabled') && $appFile->getValue('cooldown_end') > Carbon::now()->timestamp) {
+                // Nothing to do, still in cooldown
                 $cooldownRemaining = $appFile->getValue('cooldown_end') - Carbon::now()->timestamp;
                 $this->logDisplayNotify('❄️  Still in cooldown mode for ' . $cooldownRemaining . ' seconds. Nothing to do.', 'info');
-            }
 
             // Weather didn't change and not in cooldown mode
-            if(!$appFile->getValue('cooldown_enabled')) {
+            } elseif(!$appFile->getValue('cooldown_enabled')) {
+                // Nothing to do, same weather
                 $this->logDisplayNotify('👍  Weather didn\'t change. Nothing to do.', 'info');
-            }
 
             // Are we getting out of cooldown mode ? If yes, we should set the weather to the market one, and reset cooldown
-            if($appFile->getValue('cooldown_enabled') && $appFile->getValue('cooldown_end') <= Carbon::now()->timestamp) {
-                // TODO: Apply market allocation
-                //
+            } elseif($appFile->getValue('cooldown_enabled') && $appFile->getValue('cooldown_end') <= Carbon::now()->timestamp) {
+                // Authenticate to napbots
+                $napbots->authenticate($configFile->config['email'], $configFile->config['password'], $configFile->config['user_id']);
+
+                // Apply weather allocation
+                $napbots->setAllocation($configFile->config['allocations'][$weather]);
+
+                // Log
                 $this->logDisplayNotify('🔧 Changed allocation for ' . $weather . ' markets.');
+
+                // Disable cooldown
                 $appFile->setValue('cooldown_enabled',false);
                 $appFile->setValue('cooldown_end',0);
             }
@@ -128,6 +148,6 @@ class Cron extends Command
      */
     public function schedule(Schedule $schedule)
     {
-        // $schedule->command(static::class)->everyMinute();
+        $schedule->command(static::class)->hourly();
     }
 }

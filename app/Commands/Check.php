@@ -61,7 +61,7 @@ class Check extends Command
             $this->line('✅  Napbots authentication is successful.');
 
             // Try to get infos
-            $napbots->getInfos();
+            $napbots->getExchanges();
 
             // Log successful napbots getting current allocation
             $this->line('✅  Napbots management is successful.');

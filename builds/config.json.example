@@ -31,9 +31,9 @@
       "bot_only": true
     }
   },
-  "ignored_exchanges": {
+  "ignored_exchange_ids": [
 
-  },
+  ],
   "weather_change_cooldown": {
     "enabled": true,
     "duration_seconds": 43200,
