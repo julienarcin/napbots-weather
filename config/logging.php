@@ -42,13 +42,13 @@ return [
 
         'single' => [
             'driver' => 'single',
-            'path' => getcwd().'/logs/napbots.log',
+            'path' => (\Phar::running() ? dirname(\Phar::running(false)) : base_path()).'/logs/napbots.log',
             'level' => 'debug',
         ],
 
         'daily' => [
             'driver' => 'daily',
-            'path' => getcwd().'/logs/napbots.log',
+            'path' => (\Phar::running() ? dirname(\Phar::running(false)) : base_path()).'/logs/napbots.log',
             'level' => 'debug',
             'days' => 14,
         ],

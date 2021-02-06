@@ -5,7 +5,7 @@ return [
     'disks' => [
         'local' => [
             'driver' => 'local',
-            'root' => getcwd(),
+            'root' => \Phar::running() ? dirname(\Phar::running(false)) : base_path(),
         ],
     ],
 ];
