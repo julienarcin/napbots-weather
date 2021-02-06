@@ -3,12 +3,11 @@
 namespace App\Exceptions;
 
 use Exception;
-use Illuminate\Support\Facades\Log;
 use Throwable;
+use Illuminate\Support\Facades\Log;
 
 /**
- * Class MissingConfigFileFieldException
- * @package App\Exceptions
+ * Class MissingConfigFileFieldException.
  */
 class MissingConfigFileFieldException extends Exception
 {
@@ -26,7 +25,7 @@ class MissingConfigFileFieldException extends Exception
      */
     public function __construct($field = '', $code = 0, Throwable $previous = null)
     {
-        parent::__construct('❌  Missing config file field "' . $field . '". Please update it.', $code, $previous);
+        parent::__construct('❌  Missing config file field "'.$field.'". Please update it.', $code, $previous);
     }
 
     /**

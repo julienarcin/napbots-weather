@@ -3,12 +3,11 @@
 namespace App\Exceptions;
 
 use Exception;
-use Illuminate\Support\Facades\Log;
 use Throwable;
+use Illuminate\Support\Facades\Log;
 
 /**
- * Class NapbotsUnauthenticated
- * @package App\Exceptions
+ * Class NapbotsUnauthenticated.
  */
 class NapbotsUnauthenticated extends Exception
 {

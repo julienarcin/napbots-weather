@@ -3,12 +3,11 @@
 namespace App\Exceptions;
 
 use Exception;
-use Illuminate\Support\Facades\Log;
 use Throwable;
+use Illuminate\Support\Facades\Log;
 
 /**
- * Class InvalidDataFileException
- * @package App\Exceptions
+ * Class InvalidDataFileException.
  */
 class InvalidAppFileException extends Exception
 {

@@ -3,12 +3,11 @@
 namespace App\Exceptions;
 
 use Exception;
-use Illuminate\Support\Facades\Log;
 use Throwable;
+use Illuminate\Support\Facades\Log;
 
 /**
- * Class InvalidConfigFileException
- * @package App\Exceptions
+ * Class InvalidConfigFileException.
  */
 class InvalidConfigFileException extends Exception
 {

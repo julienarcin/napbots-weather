@@ -5,7 +5,6 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Default Log Channel
@@ -43,13 +42,13 @@ return [
 
         'single' => [
             'driver' => 'single',
-            'path' => getcwd() . '/logs/napbots.log',
+            'path' => getcwd().'/logs/napbots.log',
             'level' => 'debug',
         ],
 
         'daily' => [
             'driver' => 'daily',
-            'path' => getcwd() . '/logs/napbots.log',
+            'path' => getcwd().'/logs/napbots.log',
             'level' => 'debug',
             'days' => 14,
         ],
@@ -100,5 +99,4 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
     ],
-
 ];

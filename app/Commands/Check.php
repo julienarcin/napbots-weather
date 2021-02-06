@@ -2,8 +2,8 @@
 
 namespace App\Commands;
 
-use App\Classes\ConfigFile;
 use App\Classes\Napbots;
+use App\Classes\ConfigFile;
 use Illuminate\Support\Facades\Log;
 use LaravelZero\Framework\Commands\Command;
 
@@ -52,7 +52,7 @@ class Check extends Command
             $weather = $napbots->getCryptoWeather();
 
             // Log successful napbots crypto weather
-            $this->line('✅  Napbots crypto weather connection successful (' . $weather . ').');
+            $this->line('✅  Napbots crypto weather connection successful ('.$weather.').');
 
             // Try to authenticate
             $napbots->authenticate($configFile->config['email'], $configFile->config['password'], $configFile->config['user_id']);
@@ -70,13 +70,12 @@ class Check extends Command
             Log::info('✅  All checks passed successfully.');
 
             // Notify user for succesful tests
-            $this->notify("Napbots", "✅  All checks passed successfully.", "icon.png");
+            $this->notify('Napbots', '✅  All checks passed successfully.', 'icon.png');
 
             // OK
             $this->newLine(1);
             $this->info('🚀 All checks passed successfully.');
-
-        } catch(\Exception $exception) {
+        } catch (\Exception $exception) {
             $this->error($exception->getMessage());
             Log::error($exception->getMessage());
             die();

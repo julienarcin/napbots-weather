@@ -2,14 +2,13 @@
 
 namespace App\Classes;
 
-use App\Exceptions\InvalidAppFileException;
 use ArrayAccess;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
+use App\Exceptions\InvalidAppFileException;
 
 /**
- * Class AppFile
- * @package App\Classes
+ * Class AppFile.
  */
 class AppFile
 {
@@ -21,15 +20,16 @@ class AppFile
     /**
      * AppFile constructor.
      */
-    public function __construct() {
-        if(!Storage::exists('data/app.json')) {
-            Storage::put('data/app.json','{}');
+    public function __construct()
+    {
+        if (! Storage::exists('data/app.json')) {
+            Storage::put('data/app.json', '{}');
         }
 
         $file = Storage::get('data/app.json');
-        $decoded = json_decode($file,true);
+        $decoded = json_decode($file, true);
 
-        if($decoded === null || !is_array($decoded)) {
+        if ($decoded === null || ! is_array($decoded)) {
             throw new InvalidAppFileException();
         }
 
@@ -40,10 +40,11 @@ class AppFile
     }
 
     /**
-     * Delete app file
+     * Delete app file.
      */
-    public function delete() {
-        if(Storage::exists('data/app.json')) {
+    public function delete()
+    {
+        if (Storage::exists('data/app.json')) {
             Storage::delete('data/app.json');
         }
     }
@@ -52,7 +53,8 @@ class AppFile
      * @param $key
      * @return array|ArrayAccess|mixed
      */
-    public function getValue($key) {
+    public function getValue($key)
+    {
         return Arr::get($this->data, $key, null);
     }
 
@@ -60,7 +62,8 @@ class AppFile
      * @param $key
      * @param $value
      */
-    public function setValue($key, $value) {
+    public function setValue($key, $value)
+    {
         Arr::set($this->data, $key, $value);
 
         // Write data file

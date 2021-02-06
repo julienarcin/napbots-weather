@@ -2,19 +2,11 @@
 
 namespace App\Commands;
 
-use App\Classes\AppFile;
-use App\Classes\ConfigFile;
-use App\Classes\Napbots;
-use App\Exceptions\InvalidConfigFileException;
-use App\Exceptions\MissingConfigFileException;
-use App\Exceptions\MissingConfigFileFieldException;
-use App\Exceptions\NapbotsAuthException;
-use App\Exceptions\NapbotsInvalidCryptoWeatherException;
 use Carbon\Carbon;
-use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Support\Facades\Config;
+use App\Classes\AppFile;
+use App\Classes\Napbots;
+use App\Classes\ConfigFile;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 use LaravelZero\Framework\Commands\Command;
 
 class Infos extends Command
@@ -58,11 +50,11 @@ class Infos extends Command
             $infos = $napbots->getExchanges();
 
             // Crypto weather
-            if($weather == 'mild_bear') {
+            if ($weather == 'mild_bear') {
                 $this->line('🌧  Current weather is mild-bear or range markets.');
-            } elseif($weather == 'mild_bull') {
+            } elseif ($weather == 'mild_bull') {
                 $this->line('☀️  Current weather is mild-bull markets.');
-            } elseif($weather == 'extreme') {
+            } elseif ($weather == 'extreme') {
                 $this->line('🌪  Current weather is extreme markets. Trade with prudence.');
             }
 
@@ -70,9 +62,9 @@ class Infos extends Command
             $this->newLine();
 
             // Cooldown infos
-            if($appFile->getValue('cooldown_enabled') && $appFile->getValue('cooldown_end') > Carbon::now()->timestamp) {
+            if ($appFile->getValue('cooldown_enabled') && $appFile->getValue('cooldown_end') > Carbon::now()->timestamp) {
                 $cooldownRemaining = $appFile->getValue('cooldown_end') - Carbon::now()->timestamp;
-                $this->line('❄️  Cooldown: Enabled for ' . $cooldownRemaining . ' seconds.');
+                $this->line('❄️  Cooldown: Enabled for '.$cooldownRemaining.' seconds.');
             } else {
                 $this->line('❄️  Cooldown mode: Disabled');
             }
@@ -81,33 +73,32 @@ class Infos extends Command
             $this->newLine();
 
             // Exchange infos
-            foreach($infos['data'] as $exchange) {
+            foreach ($infos['data'] as $exchange) {
                 $this->line('-----------------------------------------');
-                $this->line('📈  ' . $exchange['exchangeLabel']);
+                $this->line('📈  '.$exchange['exchangeLabel']);
 
                 // Trading active
-                if($exchange['tradingActive']) {
+                if ($exchange['tradingActive']) {
                     $this->line(' - ✅ Trading active.');
                 } else {
                     $this->line(' - ❌ Trading inactive.');
                 }
 
                 // Portfolio value
-                $this->line(' - 💰 Value: $' . $exchange['totalUsdValue'] . ' / ' . $exchange['totalEurValue'] . '€');
+                $this->line(' - 💰 Value: $'.$exchange['totalUsdValue'].' / '.$exchange['totalEurValue'].'€');
 
                 // Portfolio allocation
                 $this->line(' - ⚙️  Allocation:');
-                $this->line('    * Leverage: ' . $exchange['compo']['leverage']);
-                $this->line('    * BotOnly: ' . ($exchange['botOnly'] ? 'true' : 'false'));
+                $this->line('    * Leverage: '.$exchange['compo']['leverage']);
+                $this->line('    * BotOnly: '.($exchange['botOnly'] ? 'true' : 'false'));
                 $this->line('    * Composition:');
-                foreach($exchange['compo']['compo'] as $key => $value) {
-                    $this->line('       ' . $key . ' => ' . $value*100 . '%');
+                foreach ($exchange['compo']['compo'] as $key => $value) {
+                    $this->line('       '.$key.' => '.$value * 100 .'%');
                 }
             }
             $this->line('-----------------------------------------');
             $this->newLine();
-
-        } catch(\Exception $exception) {
+        } catch (\Exception $exception) {
             $this->error($exception->getMessage());
             die();
         }

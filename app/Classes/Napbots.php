@@ -2,48 +2,47 @@
 
 namespace App\Classes;
 
+use Illuminate\Support\Facades\Log;
 use App\Exceptions\NapbotsAuthException;
-use App\Exceptions\NapbotsInvalidCryptoWeatherException;
-use App\Exceptions\NapbotsInvalidInfosException;
 use App\Exceptions\NapbotsNotResponding;
 use App\Exceptions\NapbotsUnauthenticated;
-use Illuminate\Support\Facades\Log;
+use App\Exceptions\NapbotsInvalidInfosException;
+use App\Exceptions\NapbotsInvalidCryptoWeatherException;
 
 /**
- * Class Napbots
- * @package App\Classes
+ * Class Napbots.
  */
 class Napbots
 {
     /**
      * @var
      */
-     public $email;
+    public $email;
 
     /**
      * @var
      */
-     public $password;
+    public $password;
 
     /**
      * @var
      */
-     public $userId;
+    public $userId;
 
     /**
      * @var
      */
-     private $authToken;
+    private $authToken;
 
     /**
-     * Authenticate to Napbots
+     * Authenticate to Napbots.
      * @param $email
      * @param $password
      * @param $userId
-     * @return Napbots
      * @throws NapbotsAuthException
+     * @return Napbots
      */
-    public function authenticate($email, $password, $userId): Napbots
+    public function authenticate($email, $password, $userId): self
     {
         // Set data
         $this->email = $email;
@@ -52,24 +51,24 @@ class Napbots
 
         // Login to app (get auth token)
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'https://middle.napbots.com/v1/user/login' );
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
+        curl_setopt($ch, CURLOPT_URL, 'https://middle.napbots.com/v1/user/login');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(['email' => $this->email, 'password' => $this->password]));
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
         curl_setopt($ch, CURLOPT_TIMEOUT, 45000); // 45s timeout
-        $response = curl_exec ($ch);
+        $response = curl_exec($ch);
         curl_close($ch);
 
-        $json = json_decode($response,true);
+        $json = json_decode($response, true);
 
         // Napbots not responding
-        if(!is_array($json) || !isset($json['success'])) {
+        if (! is_array($json) || ! isset($json['success'])) {
             throw new NapbotsNotResponding();
         }
 
         // Napbots auth exception
-        if($json['success'] !== true || empty($json['data']) || empty($json['data']['accessToken'])) {
+        if ($json['success'] !== true || empty($json['data']) || empty($json['data']['accessToken'])) {
             throw new NapbotsAuthException();
         }
 
@@ -80,61 +79,62 @@ class Napbots
     }
 
     /**
-     * Get crypto weather
+     * Get crypto weather.
      */
     public function getCryptoWeather(): string
     {
         // Get crypto weather
         try {
             $weatherApi = file_get_contents('https://middle.napbots.com/v1/crypto-weather');
-        } catch(\ErrorException $exception) {
+        } catch (\ErrorException $exception) {
             throw new NapbotsNotResponding();
         }
 
-        if($weatherApi) {
-            $weather = json_decode($weatherApi,true)['data']['weather']['weather'];
+        if ($weatherApi) {
+            $weather = json_decode($weatherApi, true)['data']['weather']['weather'];
         }
 
         // Check crypto weather
-        if($weather === 'Extreme markets') {
+        if ($weather === 'Extreme markets') {
             return 'extreme';
-        } elseif($weather === 'Mild bull markets'){
+        } elseif ($weather === 'Mild bull markets') {
             return 'mild_bull';
-        } elseif($weather === 'Mild bear or range markets') {
+        } elseif ($weather === 'Mild bear or range markets') {
             return 'mild_bear';
-        } else {
-            throw new NapbotsInvalidCryptoWeatherException($weather);
         }
+
+        throw new NapbotsInvalidCryptoWeatherException($weather);
     }
 
     /**
      * Get exchange infos.
      */
-    public function getExchanges() {
+    public function getExchanges()
+    {
         // Unauthenticated
-        if(empty($this->authToken)) {
+        if (empty($this->authToken)) {
             throw new NapbotsUnauthenticated();
         }
 
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, 'https://middle.napbots.com/v1/account/for-user/' . $this->userId);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
-        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json', 'token: ' . $this->authToken]);
-        $response = curl_exec ($ch);
+        curl_setopt($ch, CURLOPT_URL, 'https://middle.napbots.com/v1/account/for-user/'.$this->userId);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json', 'token: '.$this->authToken]);
+        $response = curl_exec($ch);
 
-        $json = json_decode($response,true);
+        $json = json_decode($response, true);
 
         // Napbots not responding
-        if(!is_array($json) || !isset($json['success'])) {
+        if (! is_array($json) || ! isset($json['success'])) {
             throw new NapbotsNotResponding();
         }
 
         // Napbots invalid infos
-        if(!$json['success'] || empty($json['data']) || !is_array($json['data'])) {
+        if (! $json['success'] || empty($json['data']) || ! is_array($json['data'])) {
             throw new NapbotsInvalidInfosException();
         }
 
-        return json_decode($response,true);
+        return json_decode($response, true);
     }
 
     /**
@@ -143,9 +143,10 @@ class Napbots
      * @throws NapbotsNotResponding
      * @throws NapbotsUnauthenticated
      */
-    public function setAllocation($allocation) {
+    public function setAllocation($allocation)
+    {
         // Unauthenticated
-        if(empty($this->authToken)) {
+        if (empty($this->authToken)) {
             throw new NapbotsUnauthenticated();
         }
 
@@ -157,39 +158,39 @@ class Napbots
             'botOnly' => $allocation['bot_only'],
             'compo' => [
                 'leverage' => $allocation['leverage'],
-                'compo' => $allocation['compo']
-            ]
+                'compo' => $allocation['compo'],
+            ],
         ]);
 
         // Get exchange infos
         $exchanges = $this->getExchanges();
 
         // Foreach exchanges
-        foreach($exchanges['data'] as $exchange) {
+        foreach ($exchanges['data'] as $exchange) {
             // Ignore exchange id
-            if(!in_array($exchange['accountId'], $configFile->config['ignored_exchange_ids'])) {
-
+            if (! in_array($exchange['accountId'], $configFile->config['ignored_exchange_ids'])) {
                 // Change allocation for exchange
                 $ch = curl_init();
-                curl_setopt($ch, CURLOPT_URL, 'https://middle.napbots.com/v1/account/' . $exchange['accountId']);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
+                curl_setopt($ch, CURLOPT_URL, 'https://middle.napbots.com/v1/account/'.$exchange['accountId']);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
                 curl_setopt($ch, CURLOPT_POST, 1);
                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
-                curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json', 'token: ' . $this->authToken]);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json', 'token: '.$this->authToken]);
                 curl_setopt($ch, CURLOPT_TIMEOUT, 45000); // 45s timeout
-                $response = curl_exec ($ch);
+                $response = curl_exec($ch);
                 curl_close($ch);
 
                 // Check errors
                 $json = json_decode($response, true);
-                if($json === null || empty($json['success']) || !$json['success']) {
+
+                if ($json === null || empty($json['success']) || ! $json['success']) {
                     throw new NapbotsNotResponding();
                 }
 
-                Log::info("🔨 Changed alloc for exchange " . $exchange['accountId']);
+                Log::info('🔨 Changed alloc for exchange '.$exchange['accountId']);
             } else {
-                Log::info("✋ Ignored exchange " . $exchange['accountId']);
+                Log::info('✋ Ignored exchange '.$exchange['accountId']);
             }
         }
     }

@@ -18,7 +18,8 @@
         "ext-json": "*",
         "illuminate/log": "^8.0",
         "laminas/laminas-text": "^2.8",
-        "laravel-zero/framework": "^8.4"
+        "laravel-zero/framework": "^8.4",
+        "friendsofphp/php-cs-fixer": "^2.14"
     },
     "require-dev": {
         "mockery/mockery": "^1.4.2",

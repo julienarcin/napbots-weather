@@ -38,13 +38,13 @@ class Reset extends Command
         $appFile->delete();
 
         // Notify user for succesful reset
-        $this->notify("Napbots", "✅  Application state reset.", getcwd() . '/icon.png');
+        $this->notify('Napbots', '✅  Application state reset.', getcwd().'/icon.png');
 
         // Log succesful reset
         Log::info('✅  Application state reset.');
 
         // Notify user for succesful reset
-        $this->notify("Napbots", "✅  Application state reset.", "icon.png");
+        $this->notify('Napbots', '✅  Application state reset.', 'icon.png');
 
         // OK
         $this->newLine(1);

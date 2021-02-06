@@ -3,12 +3,11 @@
 namespace App\Exceptions;
 
 use Exception;
-use Illuminate\Support\Facades\Log;
 use Throwable;
+use Illuminate\Support\Facades\Log;
 
 /**
- * Class InvalidConfigFileCompositionException
- * @package App\Exceptions
+ * Class InvalidConfigFileCompositionException.
  */
 class InvalidConfigFileCompositionException extends Exception
 {
@@ -26,7 +25,7 @@ class InvalidConfigFileCompositionException extends Exception
      */
     public function __construct($allocationName = '', $code = 0, Throwable $previous = null)
     {
-        parent::__construct('❌  Invalid config file composition "' . $allocationName . '". Sum should be equal to 1.', $code, $previous);
+        parent::__construct('❌  Invalid config file composition "'.$allocationName.'". Sum should be equal to 1.', $code, $previous);
     }
 
     /**

@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Napbots access configuration
@@ -30,7 +29,7 @@ return [
                 'STRAT_BTC_ETH_USD_H_1' => 0.6,
             ],
             'leverage' => 1.0,
-            'bot_only' => true
+            'bot_only' => true,
         ],
         'mild_bull' => [
             'compo' => [
@@ -39,7 +38,7 @@ return [
                 'STRAT_BTC_ETH_USD_H_1' => 0.8,
             ],
             'leverage' => 1.5,
-            'bot_only' => true
+            'bot_only' => true,
         ],
         'extreme' => [
             'compo' => [
@@ -48,7 +47,7 @@ return [
                 'STRAT_BTC_ETH_USD_H_1' => 0.2,
             ],
             'leverage' => 1.0,
-            'bot_only' => true
+            'bot_only' => true,
         ],
     ],
 
@@ -73,7 +72,6 @@ return [
             'STRAT_BTC_ETH_USD_H_1' => 0.5,
         ],
         'leverage' => 0.5,
-        'bot_only' => true
-    ]
-
+        'bot_only' => true,
+    ],
 ];

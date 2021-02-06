@@ -3,12 +3,11 @@
 namespace App\Exceptions;
 
 use Exception;
-use Illuminate\Support\Facades\Log;
 use Throwable;
+use Illuminate\Support\Facades\Log;
 
 /**
- * Class InvalidConfigFileFieldException
- * @package App\Exceptions
+ * Class InvalidConfigFileFieldException.
  */
 class InvalidConfigFileFieldException extends Exception
 {
@@ -26,7 +25,7 @@ class InvalidConfigFileFieldException extends Exception
      */
     public function __construct($field = '', $code = 0, Throwable $previous = null)
     {
-        parent::__construct('❌  Invalid config file field "' . $field . '". Please check it.', $code, $previous);
+        parent::__construct('❌  Invalid config file field "'.$field.'". Please check it.', $code, $previous);
     }
 
     /**

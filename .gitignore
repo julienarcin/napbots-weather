@@ -8,3 +8,4 @@
 /builds/config.json
 .phpunit.result.cache
 config.json
+.php_cs.cache
