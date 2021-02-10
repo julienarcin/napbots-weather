@@ -167,8 +167,8 @@ class Napbots
 
         // Foreach exchanges
         foreach ($exchanges['data'] as $exchange) {
-            // Ignore exchange id
-            if (! in_array($exchange['accountId'], $configFile->config['ignored_exchange_ids'])) {
+            // Ignore exchange
+            if (! in_array(strtolower($exchange['exchange']), strtolower($configFile->config['ignored_exchanges']))) {
                 // Change allocation for exchange
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, 'https://middle.napbots.com/v1/account/'.$exchange['accountId']);

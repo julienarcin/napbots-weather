@@ -31,7 +31,7 @@
       "bot_only": true
     }
   },
-  "ignored_exchange_ids": [
+  "ignored_exchanges": [
 
   ],
   "weather_change_cooldown": {
