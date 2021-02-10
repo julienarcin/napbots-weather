@@ -74,26 +74,29 @@ class Infos extends Command
 
             // Exchange infos
             foreach ($infos['data'] as $exchange) {
-                $this->line('-----------------------------------------');
-                $this->line('📈  '.$exchange['exchangeLabel']);
+                // Ignore exchange
+                if (! in_array(strtolower($exchange['exchange']), array_map('strtolower', $configFile->config['ignored_exchanges']))) {
+                    $this->line('-----------------------------------------');
+                    $this->line('📈  '.$exchange['exchangeLabel']);
 
-                // Trading active
-                if ($exchange['tradingActive']) {
-                    $this->line(' - ✅ Trading active.');
-                } else {
-                    $this->line(' - ❌ Trading inactive.');
-                }
+                    // Trading active
+                    if ($exchange['tradingActive']) {
+                        $this->line(' - ✅ Trading active.');
+                    } else {
+                        $this->line(' - ❌ Trading inactive.');
+                    }
 
-                // Portfolio value
-                $this->line(' - 💰 Value: $'.$exchange['totalUsdValue'].' / '.$exchange['totalEurValue'].'€');
+                    // Portfolio value
+                    $this->line(' - 💰 Value: $'.$exchange['totalUsdValue'].' / '.$exchange['totalEurValue'].'€');
 
-                // Portfolio allocation
-                $this->line(' - ⚙️  Allocation:');
-                $this->line('    * Leverage: '.$exchange['compo']['leverage']);
-                $this->line('    * BotOnly: '.($exchange['botOnly'] ? 'true' : 'false'));
-                $this->line('    * Composition:');
-                foreach ($exchange['compo']['compo'] as $key => $value) {
-                    $this->line('       '.$key.' => '.$value * 100 .'%');
+                    // Portfolio allocation
+                    $this->line(' - ⚙️  Allocation:');
+                    $this->line('    * Leverage: '.$exchange['compo']['leverage']);
+                    $this->line('    * BotOnly: '.($exchange['botOnly'] ? 'true' : 'false'));
+                    $this->line('    * Composition:');
+                    foreach ($exchange['compo']['compo'] as $key => $value) {
+                        $this->line('       '.$key.' => '.$value * 100 .'%');
+                    }
                 }
             }
             $this->line('-----------------------------------------');
