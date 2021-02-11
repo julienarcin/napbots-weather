@@ -36,7 +36,7 @@
   ],
   "weather_change_cooldown": {
     "enabled": true,
-    "duration_seconds": 21600,
+    "duration_seconds": 10000,
     "condition_old_weather": [
         "extreme"
     ],
