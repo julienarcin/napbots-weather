@@ -14,9 +14,7 @@
     },
     "mild_bull": {
       "compo": {
-        "STRAT_ETH_USD_H_3_V2": 0.1,
-        "STRAT_BTC_USD_H_3_V2": 0.1,
-        "STRAT_BTC_ETH_USD_H_1": 0.8
+        "STRAT_BTC_ETH_USD_H_1": 1
       },
       "leverage": 1.5,
       "bot_only": true
@@ -39,10 +37,11 @@
     "duration_seconds": 10000,
     "condition_old_weather": [
         "extreme"
+        "mild_bull"
     ],
     "condition_new_weather": [
-        "mild_bull",
-        "mild_bear"
+        "extreme",
+        "mild_bull"
     ],
     "allocation": {
       "compo": {
@@ -50,7 +49,7 @@
           "STRAT_BTC_USD_H_3_V2": 0.25,
           "STRAT_BTC_ETH_USD_H_1": 0.5
       },
-      "leverage": 0.5,
+      "leverage": 1.2,
       "bot_only": true
     }
   }
