@@ -176,9 +176,6 @@ class Napbots
                     // Initialize nbTries
                     $nbTries++;
 
-                    // Wait 15 seconds
-                    sleep(15);
-
                     // Change allocation for exchange
                     $ch = curl_init();
                     curl_setopt($ch, CURLOPT_URL, 'https://middle.napbots.com/v1/account/'.$exchange['accountId']);
