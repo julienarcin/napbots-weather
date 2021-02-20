@@ -169,22 +169,65 @@ class Napbots
         foreach ($exchanges['data'] as $exchange) {
             // Ignore exchange
             if (! in_array(strtolower($exchange['exchange']), array_map('strtolower', $configFile->config['ignored_exchanges']))) {
-                // Change allocation for exchange
-                $ch = curl_init();
-                curl_setopt($ch, CURLOPT_URL, 'https://middle.napbots.com/v1/account/'.$exchange['accountId']);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                curl_setopt($ch, CURLOPT_POST, 1);
-                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
-                curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json', 'token: '.$this->authToken]);
-                curl_setopt($ch, CURLOPT_TIMEOUT, 45000); // 45s timeout
-                $response = curl_exec($ch);
-                curl_close($ch);
+                $nbTries = 0;
+                $shouldRetry = false;
 
-                // Check errors
-                $json = json_decode($response, true);
+                do {
+                    // Initialize nbTries
+                    $nbTries++;
 
-                if ($json === null || empty($json['success']) || ! $json['success']) {
+                    // Wait 15 seconds
+                    sleep(15);
+
+                    // Change allocation for exchange
+                    $ch = curl_init();
+                    curl_setopt($ch, CURLOPT_URL, 'https://middle.napbots.com/v1/account/'.$exchange['accountId']);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                    curl_setopt($ch, CURLOPT_POST, 1);
+                    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+                    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json', 'token: '.$this->authToken]);
+                    curl_setopt($ch, CURLOPT_TIMEOUT, 45000); // 45s timeout
+                    $response = curl_exec($ch);
+                    curl_close($ch);
+
+                    // Check errors response
+                    $json = json_decode($response, true);
+
+                    if ($json === null || empty($json['success']) || ! $json['success']) {
+                        $shouldRetry = true;
+                    } else {
+                        $shouldRetry = false;
+                    }
+
+                    // Check allocations
+                    if (! $shouldRetry) {
+                        $infos = $this->getExchanges();
+
+                        if (empty($infos['success']) || ! $infos['success'] || empty($infos['data']) || ! is_array($infos['data'])) {
+                            $shouldRetry = true;
+                        } else {
+                            foreach ($infos['data'] as $exchangeCheck) {
+                                // If leverage different, set to update
+                                if (floatval($exchangeCheck['compo']['leverage']) !== floatval($allocation['leverage'])) {
+                                    $shouldRetry = true;
+                                }
+
+                                // If composition different, set to update
+                                if (array_diff($exchangeCheck['compo']['compo'], $allocation['compo'])) {
+                                    $shouldRetry = true;
+                                }
+                            }
+                        }
+                    }
+
+                    // Show log if retrying
+                    if ($shouldRetry && $nbTries < 4) {
+                        Log::info('⚙️ Didn\'t work, retrying for exchange...'.$exchange['accountId']);
+                    }
+                } while ($shouldRetry && $nbTries < 4);
+
+                if ($shouldRetry) {
                     throw new NapbotsNotResponding();
                 }
 

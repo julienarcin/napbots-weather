@@ -40,7 +40,9 @@ class Cron extends Command
     {
         Log::info('⏰  Running cron.');
 
-        $this->alert('Cron');
+        if ($this->option('verbose')) {
+            $this->alert('Cron');
+        }
 
         // Get crypto weather
         $weather = $napbots->getCryptoWeather();
@@ -131,12 +133,14 @@ class Cron extends Command
     {
         Log::info($message);
 
-        if ($type == 'line') {
-            $this->line($message);
-        } elseif ($type == 'info') {
-            $this->info($message);
+        if ($this->option('verbose')) {
+            if ($type == 'line') {
+                $this->line($message);
+            } elseif ($type == 'info') {
+                $this->info($message);
+            }
+            $this->notify('Napbots', $message, 'icon.png');
         }
-        $this->notify('Napbots', $message, 'icon.png');
     }
 
     /**
