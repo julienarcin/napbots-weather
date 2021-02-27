@@ -38,7 +38,7 @@ class Cron extends Command
      */
     public function handle(Napbots $napbots, ConfigFile $configFile, AppFile $appFile)
     {
-        Log::info('⏰  Running cron.');
+        $this->logDisplayNotify('⏰  Running cron.');
 
         if ($this->option('verbose')) {
             $this->alert('Cron');
@@ -131,6 +131,9 @@ class Cron extends Command
      */
     public function logDisplayNotify($message, $type = 'line')
     {
+        // Resolve ConfigFile
+        $configFile = app(ConfigFile::class);
+
         Log::info($message);
 
         if ($this->option('verbose')) {
@@ -140,6 +143,15 @@ class Cron extends Command
                 $this->info($message);
             }
             $this->notify('Napbots', $message, 'icon.png');
+        }
+
+        // Log to telegram
+        if (! empty($configFile->config['telegram_token']) && ! empty($configFile->config['telegram_chat_ids'])) {
+            // Create Telegram API object
+            $bot = new \TelegramBot\Api\BotApi($configFile->config['telegram_token']);
+            foreach ($configFile->config['telegram_chat_ids'] as $chatId) {
+                $bot->sendMessage($chatId, '<pre>NAPBOTS:  '.$message.'</pre>', 'HTML');
+            }
         }
     }
 

@@ -64,6 +64,16 @@ class ConfigFile
             throw new MissingConfigFileFieldException('user_id');
         }
 
+        // Check telegram token
+        if (! isset($this->config['telegram_token'])) {
+            throw new MissingConfigFileFieldException('telegram_token');
+        }
+
+        // Check telegram chat ids
+        if (! isset($this->config['telegram_chat_ids']) || ! is_array($this->config['telegram_chat_ids'])) {
+            throw new MissingConfigFileFieldException('telegram_chat_ids');
+        }
+
         // Check ignored exchanges
         if (! isset($this->config['ignored_exchanges']) || ! is_array($this->config['ignored_exchanges'])) {
             throw new MissingConfigFileFieldException('ignored_exchanges');

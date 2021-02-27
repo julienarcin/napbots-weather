@@ -16,10 +16,11 @@
         "php": "^7.3|^8.0",
         "ext-curl": "*",
         "ext-json": "*",
+        "friendsofphp/php-cs-fixer": "^2.14",
         "illuminate/log": "^8.0",
         "laminas/laminas-text": "^2.8",
         "laravel-zero/framework": "^8.4",
-        "friendsofphp/php-cs-fixer": "^2.14"
+        "telegram-bot/api": "^2.3"
     },
     "require-dev": {
         "mockery/mockery": "^1.4.2",

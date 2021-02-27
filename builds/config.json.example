@@ -2,6 +2,8 @@
   "email": "",
   "password": "",
   "user_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+  "telegram_token": "",
+  "telegram_chat_ids": [],
   "allocations": {
     "mild_bear": {
       "compo": {
