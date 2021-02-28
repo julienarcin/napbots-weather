@@ -123,6 +123,11 @@ class Cron extends Command
                 $appFile->setValue('cooldown_end', 0);
             }
         }
+
+        // Ping cron url if set
+        if (! empty($configFile->config['cron_ping_url'])) {
+            file_get_contents($configFile->config['cron_ping_url']);
+        }
     }
 
     /**

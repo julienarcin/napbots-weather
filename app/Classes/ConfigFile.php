@@ -74,6 +74,11 @@ class ConfigFile
             throw new MissingConfigFileFieldException('telegram_chat_ids');
         }
 
+        // Check cron ping url
+        if (! isset($this->config['cron_ping_url'])) {
+            throw new MissingConfigFileFieldException('cron_ping_url');
+        }
+
         // Check ignored exchanges
         if (! isset($this->config['ignored_exchanges']) || ! is_array($this->config['ignored_exchanges'])) {
             throw new MissingConfigFileFieldException('ignored_exchanges');

@@ -4,6 +4,7 @@
   "user_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
   "telegram_token": "",
   "telegram_chat_ids": [],
+  "cron_ping_url": "",
   "allocations": {
     "mild_bear": {
       "compo": {
