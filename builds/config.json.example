@@ -39,7 +39,7 @@
     "enabled": true,
     "duration_seconds": 10000,
     "condition_old_weather": [
-        "extreme"
+        "extreme",
         "mild_bull"
     ],
     "condition_new_weather": [
