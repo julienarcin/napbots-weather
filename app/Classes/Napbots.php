@@ -206,7 +206,7 @@ class Napbots
                         } else {
                             foreach ($infos['data'] as $exchangeCheck) {
                                 // If leverage different, set to update
-                                if (floatval($exchangeCheck['compo']['leverage']) !== floatval($allocation['leverage'])) {
+                                if (strval($exchangeCheck['compo']['leverage']) != strval($allocation['leverage'])) {
                                     $shouldRetry = true;
                                 }
 
