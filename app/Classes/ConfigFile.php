@@ -160,7 +160,7 @@ class ConfigFile
         }
 
         // Check leverage validity
-        if ($allocation['leverage'] < 0 || $allocation['leverage'] > 1.5) {
+        if (round($allocation['leverage'], 2) < 0 || round($allocation['leverage'], 2) > 1.5) {
             throw new InvalidConfigFileFieldException('allocations -> '.$name.' -> bot_only');
         }
 
@@ -172,7 +172,7 @@ class ConfigFile
         // Check compo validity
         $sumWeights = 0;
         foreach ($allocation['compo'] as $botWeight) {
-            $sumWeights += $botWeight;
+            $sumWeights += round($botWeight, 2);
         }
 
         if ($sumWeights != 1) {

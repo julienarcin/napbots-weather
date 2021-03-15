@@ -80,18 +80,28 @@ class Napbots
 
     /**
      * Get crypto weather.
+     * @throws NapbotsNotResponding
      */
     public function getCryptoWeather(): string
     {
         // Get crypto weather
-        try {
+        $tsMax = 0;
+        for ($i = 1; $i <= 10; $i++) {
             $weatherApi = file_get_contents('https://middle.napbots.com/v1/crypto-weather');
-        } catch (\ErrorException $exception) {
-            throw new NapbotsNotResponding();
+
+            if ($weatherApi) {
+                $ts = json_decode($weatherApi, true)['data']['weather']['ts'];
+
+                if ($ts > $tsMax) {
+                    $weather = json_decode($weatherApi, true)['data']['weather']['weather'];
+                    $tsMax = $ts;
+                }
+            }
+            usleep(250000);
         }
 
-        if ($weatherApi) {
-            $weather = json_decode($weatherApi, true)['data']['weather']['weather'];
+        if (empty($weather)) {
+            throw new NapbotsNotResponding();
         }
 
         // Check crypto weather
@@ -157,8 +167,10 @@ class Napbots
         $params = json_encode([
             'botOnly' => $allocation['bot_only'],
             'compo' => [
-                'leverage' => $allocation['leverage'],
-                'compo' => $allocation['compo'],
+                'leverage' => round($allocation['leverage'], 2),
+                'compo' => array_map(function ($value) {
+                    return round($value, 2);
+                }, $allocation['compo']),
             ],
         ]);
 
@@ -206,12 +218,14 @@ class Napbots
                         } else {
                             foreach ($infos['data'] as $exchangeCheck) {
                                 // If leverage different, set to update
-                                if (strval($exchangeCheck['compo']['leverage']) != strval($allocation['leverage'])) {
+                                if (strval($exchangeCheck['compo']['leverage']) != strval(round($allocation['leverage'], 2))) {
                                     $shouldRetry = true;
                                 }
 
                                 // If composition different, set to update
-                                if (array_diff($exchangeCheck['compo']['compo'], $allocation['compo'])) {
+                                if (array_diff($exchangeCheck['compo']['compo'], array_map(function ($value) {
+                                    return round($value, 2);
+                                }, $allocation['compo']))) {
                                     $shouldRetry = true;
                                 }
                             }
