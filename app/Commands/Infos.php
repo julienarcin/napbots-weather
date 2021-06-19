@@ -122,7 +122,7 @@ class Infos extends Command
             // Create Telegram API object
             $bot = new \TelegramBot\Api\BotApi($configFile->config['telegram_token']);
             foreach ($configFile->config['telegram_chat_ids'] as $chatId) {
-                $bot->sendMessage($chatId, '<pre>NAPBOTS:  '.$message.'</pre>', 'HTML');
+                $bot->sendMessage($chatId, '<pre>NAPBOTS WEATHER:  '.$message.'</pre>', 'HTML');
             }
         }
     }
