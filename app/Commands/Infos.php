@@ -35,7 +35,7 @@ class Infos extends Command
      */
     public function handle(Napbots $napbots, ConfigFile $configFile, AppFile $appFile)
     {
-        Log::info('💻  Getting napbots infos.');
+        Log::info('💻  Getting infos.');
 
         $this->alert('Informations');
         $this->output('📡️ Gettings infos');
@@ -52,11 +52,11 @@ class Infos extends Command
 
             // Crypto weather
             if ($weather == 'mild_bear') {
-                $this->output('🌧  Current weather is mild-bear or range markets.');
+                $this->output('🌧  Weather: mild-bear');
             } elseif ($weather == 'mild_bull') {
-                $this->output('☀️  Current weather is mild-bull markets.');
+                $this->output('☀️  Weather: mild-bull');
             } elseif ($weather == 'extreme') {
-                $this->output('🌪  Current weather is extreme markets. Trade with prudence.');
+                $this->output('🌪  Weather: extreme');
             }
 
             // New line
@@ -65,9 +65,9 @@ class Infos extends Command
             // Cooldown infos
             if ($appFile->getValue('cooldown_enabled') && $appFile->getValue('cooldown_end') > Carbon::now()->timestamp) {
                 $cooldownRemaining = $appFile->getValue('cooldown_end') - Carbon::now()->timestamp;
-                $this->output('❄️  Cooldown: Enabled for '.$cooldownRemaining.' seconds.');
+                $this->output('❄️  Cooldown: Enabled for '.$cooldownRemaining.'s.');
             } else {
-                $this->output('❄️  Cooldown mode: Disabled');
+                $this->output('❄️  Cooldown: Disabled');
             }
 
             // New line
@@ -122,7 +122,7 @@ class Infos extends Command
             // Create Telegram API object
             $bot = new \TelegramBot\Api\BotApi($configFile->config['telegram_token']);
             foreach ($configFile->config['telegram_chat_ids'] as $chatId) {
-                $bot->sendMessage($chatId, '<pre>NAPBOTS WEATHER:  '.$message.'</pre>', 'HTML');
+                $bot->sendMessage($chatId, '<pre>NW:  '.$message.'</pre>', 'HTML');
             }
         }
     }

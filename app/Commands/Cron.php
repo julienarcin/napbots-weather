@@ -48,11 +48,11 @@ class Cron extends Command
         $weather = $napbots->getCryptoWeather();
 
         if ($weather == 'mild_bear') {
-            $this->logDisplayNotify('🌧  Current weather is mild-bear or range markets.');
+            $this->logDisplayNotify('🌧  Weather: mild-bear');
         } elseif ($weather == 'mild_bull') {
-            $this->logDisplayNotify('☀️  Current weather is mild-bull markets.');
+            $this->logDisplayNotify('☀️  Weather: mild-bull');
         } elseif ($weather == 'extreme') {
-            $this->logDisplayNotify('🌪  Current weather is extreme markets.');
+            $this->logDisplayNotify('🌪  Weather: extreme');
         }
 
         // Compare with app weather
@@ -61,7 +61,7 @@ class Cron extends Command
             if ($appFile->getValue('cooldown_enabled') && $appFile->getValue('cooldown_end') > Carbon::now()->timestamp) {
                 // Nothing to do, still in cooldown
                 $cooldownRemaining = $appFile->getValue('cooldown_end') - Carbon::now()->timestamp;
-                $this->logDisplayNotify('❄️  Still in cooldown mode for '.$cooldownRemaining.' seconds. Nothing to do.', 'info');
+                $this->logDisplayNotify('❄️ Cooldown for '.$cooldownRemaining.'s.', 'info');
             }
 
             // Are we in cooldown mode ? If no, we should set up cooldown mode (if enabled) or apply market allocation
@@ -79,7 +79,7 @@ class Cron extends Command
                     $appFile->setValue('cooldown_end', Carbon::now()->timestamp + $configFile->config['weather_change_cooldown']['duration_seconds']);
 
                     // Notify user
-                    $this->logDisplayNotify('❄️  Applied cooldown mode for '.$configFile->config['weather_change_cooldown']['duration_seconds'].' seconds.', 'info');
+                    $this->logDisplayNotify('❄️  Applied cooldown for '.$configFile->config['weather_change_cooldown']['duration_seconds'].'s.', 'info');
                 // Else, apply weather strategy immediately
                 } else {
                     // Authenticate to napbots
@@ -100,12 +100,12 @@ class Cron extends Command
             if ($appFile->getValue('cooldown_enabled') && $appFile->getValue('cooldown_end') > Carbon::now()->timestamp) {
                 // Nothing to do, still in cooldown
                 $cooldownRemaining = $appFile->getValue('cooldown_end') - Carbon::now()->timestamp;
-                $this->logDisplayNotify('❄️  Still in cooldown mode for '.$cooldownRemaining.' seconds. Nothing to do.', 'info');
+                $this->logDisplayNotify('❄️  Cooldown for '.$cooldownRemaining.'s. Nothing to do.', 'info');
 
             // Weather didn't change and not in cooldown mode
             } elseif (! $appFile->getValue('cooldown_enabled')) {
                 // Nothing to do, same weather
-                $this->logDisplayNotify('👍  Weather didn\'t change. Nothing to do.', 'info');
+                $this->logDisplayNotify('👍  Weather didn\'t change.', 'info');
 
             // Are we getting out of cooldown mode ? If yes, we should set the weather to the market one, and reset cooldown
             } elseif ($appFile->getValue('cooldown_enabled') && $appFile->getValue('cooldown_end') <= Carbon::now()->timestamp) {
@@ -155,7 +155,7 @@ class Cron extends Command
             // Create Telegram API object
             $bot = new \TelegramBot\Api\BotApi($configFile->config['telegram_token']);
             foreach ($configFile->config['telegram_chat_ids'] as $chatId) {
-                $bot->sendMessage($chatId, '<pre>NAPBOTS WEATHER:  '.$message.'</pre>', 'HTML');
+                $bot->sendMessage($chatId, '<pre>NW:  '.$message.'</pre>', 'HTML');
             }
         }
     }
