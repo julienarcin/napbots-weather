@@ -100,7 +100,7 @@ class Cron extends Command
             if ($appFile->getValue('cooldown_enabled') && $appFile->getValue('cooldown_end') > Carbon::now()->timestamp) {
                 // Nothing to do, still in cooldown
                 $cooldownRemaining = $appFile->getValue('cooldown_end') - Carbon::now()->timestamp;
-                $this->logDisplayNotify('❄️  Cooldown for '.$cooldownRemaining.'s. Nothing to do.', 'info');
+                $this->logDisplayNotify('❄️  Cooldown for '.$cooldownRemaining.'s.', 'info');
 
             // Weather didn't change and not in cooldown mode
             } elseif (! $appFile->getValue('cooldown_enabled')) {
