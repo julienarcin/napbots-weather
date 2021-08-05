@@ -86,9 +86,6 @@ class Infos extends Command
                         $this->output(' - ❌ Trading inactive.');
                     }
 
-                    // Portfolio value
-                    $this->output(' - 💰 Value: $'.$exchange['totalUsdValue'].' / '.$exchange['totalEurValue'].'€');
-
                     // Portfolio allocation
                     $this->output(' - ⚙️  Allocation:');
                     $this->output('     * Leverage: '.$exchange['compo']['leverage']);
